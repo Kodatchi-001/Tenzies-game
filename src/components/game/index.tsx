@@ -7,22 +7,28 @@ import { diesTypes } from "@/types";
 import { useEffect, useState } from "react";
 
 export default function Game() {
-     /*---> States <---*/
+    /*---> States <---*/
     const [dice, setDice] = useState<diesTypes[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     /*---> Functions <---*/
-    const generateAllDies = () => {
+    const generateAllDies = (): diesTypes[] => {
         return new Array(10).fill(0).map(() => ({ id: uuidv4(), value: Math?.ceil(Math?.random() * 6), isHeld: false }));
     }
-    const roleDice = () => {
-        setDice(generateAllDies());
+    const roleDice = (): void => {
+        setDice((prevState) => prevState?.map((die) => (
+            die?.isHeld ? die : { ...die, value: Math?.ceil(Math?.random() * 6) }
+        )))
     }
-    useEffect(() => {
+    const hold = (id: string): void => {
+        setDice((prevState) => prevState?.map((die) => die?.id === id ? { ...die, isHeld: !die?.isHeld } : die));
+    }
+    useEffect((): void => {
         setDice(generateAllDies());
         setLoading(false);
     }, []);
 
+    console.log(dice)
     return <>
         <section className="w-full h-screen flex flex-col gap-10 items-center pt-28">
             <div className="flex flex-col items-center gap-7">
@@ -34,7 +40,7 @@ export default function Game() {
                         ))
                     ) : (
                         dice && dice?.map((item) => (
-                            <Die key={item?.id} value={item?.value} isHeld={item?.isHeld} />
+                            <Die key={item?.id} value={item?.value} isHeld={item?.isHeld} hold={() => hold(item?.id)} />
                         ))
                     )}
                 </div>
