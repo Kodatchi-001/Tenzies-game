@@ -1,13 +1,12 @@
 "use client"
 
-import { useState } from "react";
 import Die from "../die";
 import Hero from "../hero";
 import { v4 as uuidv4 } from "uuid";
 import { diesTypes } from "@/types";
 
 export default function Game() {
-    const [dies, setDies] = useState<diesTypes[]>([
+    const dies: diesTypes[] = [
         { id: uuidv4(), value: 0, isHeld: false },
         { id: uuidv4(), value: 1, isHeld: false },
         { id: uuidv4(), value: 2, isHeld: false },
@@ -18,7 +17,8 @@ export default function Game() {
         { id: uuidv4(), value: 7, isHeld: false },
         { id: uuidv4(), value: 8, isHeld: false },
         { id: uuidv4(), value: 9, isHeld: false },
-    ])
+    ]
+
     return <>
         <section className="w-full h-screen flex flex-col gap-10 items-center pt-28">
             <div className="flex flex-col items-center gap-7">
