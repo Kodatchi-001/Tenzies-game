@@ -11,7 +11,9 @@
   "dependencies": {
     "next": "15.1.7",
     "react": "^19.0.0",
+    "react-confetti": "^6.2.2",
     "react-dom": "^19.0.0",
+    "react-use": "^17.6.0",
     "uuid": "^11.0.5"
   },
   "devDependencies": {

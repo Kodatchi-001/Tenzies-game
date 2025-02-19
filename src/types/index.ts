@@ -1,4 +1,4 @@
-export interface diesTypes {
+export interface diceTypes {
     id: string
     value: number
     isHeld: boolean
