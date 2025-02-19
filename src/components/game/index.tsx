@@ -4,32 +4,43 @@ import Die from "../die";
 import Hero from "../hero";
 import { v4 as uuidv4 } from "uuid";
 import { diesTypes } from "@/types";
+import { useEffect, useState } from "react";
 
 export default function Game() {
-    const dies: diesTypes[] = [
-        { id: uuidv4(), value: 0, isHeld: false },
-        { id: uuidv4(), value: 1, isHeld: false },
-        { id: uuidv4(), value: 2, isHeld: false },
-        { id: uuidv4(), value: 3, isHeld: false },
-        { id: uuidv4(), value: 4, isHeld: false },
-        { id: uuidv4(), value: 5, isHeld: false },
-        { id: uuidv4(), value: 6, isHeld: false },
-        { id: uuidv4(), value: 7, isHeld: false },
-        { id: uuidv4(), value: 8, isHeld: false },
-        { id: uuidv4(), value: 9, isHeld: false },
-    ]
+     /*---> States <---*/
+    const [dice, setDice] = useState<diesTypes[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    /*---> Functions <---*/
+    const generateAllDies = () => {
+        return new Array(10).fill(0).map(() => ({ id: uuidv4(), value: Math?.ceil(Math?.random() * 6), isHeld: false }));
+    }
+    const roleDice = () => {
+        setDice(generateAllDies());
+    }
+    useEffect(() => {
+        setDice(generateAllDies());
+        setLoading(false);
+    }, []);
 
     return <>
         <section className="w-full h-screen flex flex-col gap-10 items-center pt-28">
             <div className="flex flex-col items-center gap-7">
                 <Hero />
                 <div className="grid grid-rows-2 grid-cols-5 gap-5">
-                    {dies.map((item) => (
-                        <Die key={item?.id} value={item?.value} isHeld={item?.isHeld} />
-                    ))}
+                    {loading ? (
+                        Array(10)?.fill(0).map((item, index) => (
+                            <Die key={index} value={item?.value} isHeld={item?.isHeld} animation={true} />
+                        ))
+                    ) : (
+                        dice && dice?.map((item) => (
+                            <Die key={item?.id} value={item?.value} isHeld={item?.isHeld} />
+                        ))
+                    )}
                 </div>
             </div>
-            <button className="px-[18px] py-[9px] rounded-md bg-[#5035FF] text-white text-[1rem] font-bold whitespace-nowrap">
+            <button className="px-[18px] py-[9px] rounded-md bg-[#5035FF] text-white text-[1rem] font-bold whitespace-nowrap"
+                onClick={roleDice}>
                 Roll Dice
             </button>
         </section>
