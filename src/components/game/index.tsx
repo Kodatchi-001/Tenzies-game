@@ -7,8 +7,14 @@ import { diceTypes } from "@/types";
 import { useEffect, useState } from "react";
 import Confetti from "react-confetti"
 import { useWindowSize } from 'react-use'
+import Score from "../score";
+import Navbar from "../nav";
+// import { usesharestate } from "@/context";
+
 
 export default function Game() {
+    // const {showMenu , setShowMenu} = usesharestate()
+    // console.log(showMenu)
     /*---> States <---*/
     const [dice, setDice] = useState<diceTypes[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -18,7 +24,7 @@ export default function Game() {
 
     /*---> Functions <---*/
     const generateAllDies = (): diceTypes[] => {
-        return new Array(10).fill(0).map(() => ({ id: uuidv4(), value: Math?.ceil(Math?.random() * 6), isHeld: false }));
+        return new Array(10).fill(0).map((e , i) => ({ id: uuidv4(), value: Math?.ceil(Math?.random() * 6), isHeld: false }));
     }
     const roleDice = (): void => {
         if (gameWon) {
@@ -39,26 +45,30 @@ export default function Game() {
     }, []);
 
     return <>
-        <section className="w-full h-screen flex flex-col gap-10 items-center pt-28">
-            {isClient && gameWon && <Confetti width={width} height={height} />}
-            <div className="flex flex-col items-center gap-7">
-                <Hero />
-                <div className="grid grid-rows-2 grid-cols-5 gap-5">
-                    {loading ? (
-                        Array(10)?.fill(0).map((item, index) => (
-                            <Die key={index} value={item?.value} isHeld={item?.isHeld} animation={true} />
-                        ))
-                    ) : (
-                        dice && dice?.map((item) => (
-                            <Die key={item?.id} value={item?.value} isHeld={item?.isHeld} hold={() => hold(item?.id)} />
-                        ))
-                    )}
+        <Navbar />
+        <section className="w-full h-screen flex relative overflow-hidden">
+            <div className="w-full h-full flex flex-col gap-10 items-center pt-28">
+                {isClient && gameWon && <Confetti width={width} height={height} />}
+                <div className="flex flex-col items-center gap-7">
+                    <Hero title="Tenzies" paragraphe="Roll until all dice are the same. Click each die to freeze it at its current value between rolls." />
+                    <div className="grid grid-rows-2 grid-cols-5 gap-5">
+                        {loading ? (
+                            Array(10)?.fill(0).map((item, index) => (
+                                <Die key={index} value={item?.value} isHeld={item?.isHeld} animation={true} />
+                            ))
+                        ) : (
+                            dice && dice?.map((item) => (
+                                <Die key={item?.id} value={item?.value} isHeld={item?.isHeld} hold={() => hold(item?.id)} />
+                            ))
+                        )}
+                    </div>
                 </div>
+                <button className="px-[18px] py-[8px] rounded-md bg-[#5035FF] text-white text-[1rem] font-bold whitespace-nowrap"
+                    onClick={roleDice}>
+                    {gameWon ? "New Game" : "Roll Dice"}
+                </button>
             </div>
-            <button className="px-[18px] py-[9px] rounded-md bg-[#5035FF] text-white text-[1rem] font-bold whitespace-nowrap"
-                onClick={roleDice}>
-                {gameWon ? "New Game" : "Roll Dice"}
-            </button>
+            <Score />
         </section>
     </>
 }

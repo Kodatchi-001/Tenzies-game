@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "@/styles/index.css";
+import ShareProvider from "@/context";
 
 export const metadata: Metadata = {
   title: "Tenzies Game",
@@ -14,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {children}
+        <ShareProvider>
+          {children}
+        </ShareProvider>
       </body>
     </html>
   );

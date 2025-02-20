@@ -3,3 +3,7 @@ export interface diceTypes {
     value: number
     isHeld: boolean
 }
+export interface contextTypes {
+    showMenu: boolean
+    setShowMenu: React.Dispatch<React.SetStateAction<boolean>>
+}
