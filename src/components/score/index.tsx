@@ -2,7 +2,7 @@
 
 import Hero from "../hero";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { motion } from "framer-motion";
 import { shareStates } from "@/context";
 

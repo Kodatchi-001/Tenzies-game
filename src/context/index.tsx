@@ -1,7 +1,7 @@
 "use client"
 
 import { contextTypes } from "@/types";
-import { createContext, useContext, useState } from "react"
+import { createContext, useState } from "react"
 
 const initialState = {
     showMenu: false,
@@ -20,5 +20,3 @@ export default function ShareProvider({ children }: { children: React.ReactNode 
         </shareStates.Provider>
     </>
 }
-
-// export const usesharestate = () => useContext(shareStates)

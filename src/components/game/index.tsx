@@ -9,12 +9,8 @@ import Confetti from "react-confetti"
 import { useWindowSize } from 'react-use'
 import Score from "../score";
 import Navbar from "../nav";
-// import { usesharestate } from "@/context";
-
 
 export default function Game() {
-    // const {showMenu , setShowMenu} = usesharestate()
-    // console.log(showMenu)
     /*---> States <---*/
     const [dice, setDice] = useState<diceTypes[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -24,7 +20,7 @@ export default function Game() {
 
     /*---> Functions <---*/
     const generateAllDies = (): diceTypes[] => {
-        return new Array(10).fill(0).map((e , i) => ({ id: uuidv4(), value: Math?.ceil(Math?.random() * 6), isHeld: false }));
+        return new Array(10).fill(0).map(() => ({ id: uuidv4(), value: Math?.ceil(Math?.random() * 6), isHeld: false }));
     }
     const roleDice = (): void => {
         if (gameWon) {
