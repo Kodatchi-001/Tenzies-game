@@ -28,6 +28,7 @@ export default function Game() {
     const roleDice = (): void => {
         if (gameWon) {
             setDice(generateAllDies)
+            setTimerRuns(false)
         } else {
             setDice((prevState) => prevState?.map((die) => (
                 die?.isHeld ? die : { ...die, value: Math?.ceil(Math?.random() * 6) }
@@ -35,7 +36,7 @@ export default function Game() {
         }
     }
     const hold = (id: string): void => {
-        if (gameWon) { setTimerRuns(false) } else { setTimerRuns(true) }
+        setTimerRuns(true)
         setDice((prevState) => prevState?.map((die) => die?.id === id ? { ...die, isHeld: !die?.isHeld } : die));
     }
     const gameTimer = (): void => {
@@ -54,11 +55,6 @@ export default function Game() {
     useEffect(() => {
         gameTimer();
     }, [timerRuns, gameWon])
-    useEffect(() => {
-        if (gameWon) {
-            setTimerRuns(false);
-        }
-    }, [gameWon]);
     useEffect(() => {
         setDice(generateAllDies());
         setLoading(false);
