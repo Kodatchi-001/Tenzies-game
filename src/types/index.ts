@@ -7,3 +7,4 @@ export interface contextTypes {
     showMenu: boolean
     setShowMenu: React.Dispatch<React.SetStateAction<boolean>>
 }
+export type gameLevelTypes = 'normal' | 'hard' | 'extreme'
