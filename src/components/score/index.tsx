@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { shareStates } from "@/context";
 
 export default function Score() {
-    const { showMenu } = useContext(shareStates);
+    const { showMenu, score } = useContext(shareStates);
 
     return (
         <motion.div
@@ -21,14 +21,18 @@ export default function Score() {
                     <TableHeader>
                         <TableRow>
                             <TableHead>Number</TableHead>
-                            <TableHead className="text-right">Time</TableHead>
+                            <TableHead className="text-right w-0">Level</TableHead>
+                            <TableHead className="text-right w-0">Time</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow>
-                            <TableCell className="font-bold">01</TableCell>
-                            <TableCell className="text-right font-bold">INV001</TableCell>
-                        </TableRow>
+                        {score && score?.sort((a, b) => a?.time?.minutes - b?.time?.minutes || a?.time?.seconds - b?.time?.seconds).map((item, index) => (
+                            <TableRow key={index}>
+                                <TableCell className="font-bold">{index + 1}</TableCell>
+                                <TableCell className="text-right font-bold w-0">{item?.level}</TableCell>
+                                <TableCell className="text-right font-bold w-20">{item?.time?.minutes} : {item?.time?.seconds}</TableCell>
+                            </TableRow>
+                        ))}
                     </TableBody>
                 </Table>
             </div>

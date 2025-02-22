@@ -3,26 +3,29 @@
 import Die from "../die";
 import Hero from "../hero";
 import { v4 as uuidv4 } from "uuid";
-import { diceTypes, gameLevelTypes } from "@/types";
-import { useEffect, useRef, useState } from "react";
+import { diceTypes, gameLevelTypes, scoreTypes } from "@/types";
+import { useContext, useEffect, useRef, useState } from "react";
 import Confetti from "react-confetti"
 import { useWindowSize } from 'react-use'
 import Score from "../score";
 import Navbar from "../nav";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select"
+import { shareStates } from "@/context";
 
 export default function Game() {
     /*---> States <---*/
     const [dice, setDice] = useState<diceTypes[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const gameWon: boolean = dice?.every((die) => die?.isHeld) && dice?.every((die) => die?.value === dice[0]?.value);
-    const { width, height } = useWindowSize()
     const [isClient, setIsClient] = useState<boolean>(false);
     const [timerRuns, setTimerRuns] = useState<boolean>(false);
-    const [time, setTime] = useState<{ seconds: number, minutes: number }>({ seconds: 0, minutes: 0 });
+    const [time, setTime] = useState<{ minutes: number, seconds: number }>({ minutes: 0, seconds: 0 });
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const [level, setLevel] = useState<gameLevelTypes>('normal')
-    const [randomLevel, setRandomLevel] = useState<number>(6)
+    const [randomLevel, setRandomLevel] = useState<number>(6);
+    const [gameScore, setGameScore] = useState<scoreTypes>({ level: "", time: { minutes: 0, seconds: 0 } })
+    const { width, height } = useWindowSize()
+    const { setScore } = useContext(shareStates)
 
     /*---> Functions <---*/
     const generateAllDies = (): diceTypes[] => {
@@ -49,11 +52,14 @@ export default function Game() {
                 setTime((prevState) => {
                     const newSeconds = prevState?.seconds < 59 ? prevState?.seconds + 1 : 0;
                     const newMinutes = prevState?.seconds < 59 ? prevState?.minutes : prevState.minutes + 1;
-                    return { seconds: newSeconds, minutes: newMinutes };
+                    return { minutes: newMinutes, seconds: newSeconds };
                 });
             }, 1000);
         }
-        if (gameWon && intervalRef.current) { clearInterval(intervalRef.current) }
+        if (gameWon && intervalRef.current) {
+            setGameScore({ level: level, time: time })
+            clearInterval(intervalRef.current)
+        }
     }
     const changeLevel = (): void => {
         setRandomLevel(level === "normal" ? 6 : level === "hard" ? 12 : level === "extreme" ? 24 : 0)
@@ -72,7 +78,15 @@ export default function Game() {
         changeLevel()
         roleDice()
     }, [randomLevel, level])
-    
+    useEffect(() => {
+        if (gameScore?.level) {
+            setScore((prevState) => {
+                const updatedScores = [...prevState, gameScore];
+                localStorage.setItem("score", JSON.stringify(updatedScores));
+                return updatedScores;
+            });
+        }
+    }, [gameScore])
     return <>
         <Navbar />
         <section className="w-full h-screen flex relative overflow-hidden">
