@@ -1,7 +1,7 @@
-import Game from "@/components/game";
+import Tenzies from "@/components/tenzies";
 
 export default function Home() {
   return <>
-    <Game />
+    <Tenzies />
   </>
 }

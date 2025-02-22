@@ -7,14 +7,17 @@ const initialState: contextTypes = {
     showMenu: false,
     setShowMenu: () => false,
     score: [],
-    setScore: () => []
+    setScore: () => [],
+    showInformation: false,
+    setShowInformation: () => false
 }
 
 export const shareStates = createContext<contextTypes>(initialState);
 
 export default function ShareProvider({ children }: { children: React.ReactNode }) {
-    const [showMenu, setShowMenu] = useState(false);
+    const [showMenu, setShowMenu] = useState<boolean>(false);
     const [score, setScore] = useState<scoreTypes[]>([])
+    const [showInformation, setShowInformation] = useState<boolean>(false);
 
     useEffect(() => {
         const storedScore = localStorage?.getItem("score");
@@ -22,7 +25,7 @@ export default function ShareProvider({ children }: { children: React.ReactNode 
     }, [])
 
     return <>
-        <shareStates.Provider value={{ showMenu, setShowMenu, score, setScore }}>
+        <shareStates.Provider value={{ showMenu, setShowMenu, score, setScore, showInformation, setShowInformation }}>
             {children}
         </shareStates.Provider>
     </>

@@ -1,6 +1,7 @@
 import { MouseEventHandler } from 'react';
 
 export default function Die(props: { value: number, isHeld: boolean, animation?: boolean, hold?: MouseEventHandler<HTMLButtonElement> }) {
+    /*---> Props <---*/
     const { value, isHeld, animation, hold } = props
 
     return <>

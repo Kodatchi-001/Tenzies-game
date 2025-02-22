@@ -13,4 +13,6 @@ export interface contextTypes {
     setShowMenu: React.Dispatch<React.SetStateAction<boolean>>
     score: scoreTypes[]
     setScore: React.Dispatch<React.SetStateAction<scoreTypes[]>>
+    showInformation: boolean
+    setShowInformation: React.Dispatch<React.SetStateAction<boolean>>
 }
