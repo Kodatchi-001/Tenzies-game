@@ -31,6 +31,7 @@ export default function Game() {
         if (gameWon) {
             setDice(generateAllDies)
             setTimerRuns(false)
+            setTime({ minutes: 0, seconds: 0 });
         } else {
             setDice((prevState) => prevState?.map((die) => (
                 die?.isHeld ? die : { ...die, value: Math?.ceil(Math?.random() * randomLevel) }
@@ -83,7 +84,7 @@ export default function Game() {
             });
         }
     }, [gameScore])
-    
+
     return <>
         <div className="w-full h-full flex flex-col gap-10 items-center pt-28">
             {isClient && gameWon && <Confetti width={width} height={height} />}
@@ -102,7 +103,7 @@ export default function Game() {
                 </div>
             </div>
             <div className="flex items-center gap-2">
-                <button className="px-[18px] py-[7.6px] rounded-md bg-black text-white text-[1rem] font-bold whitespace-nowrap"
+                <button className="px-[18px] py-[7.6px] rounded-md bg-black text-white text-[1rem] font-bold"
                     onClick={roleDice}>
                     {gameWon ? "New Game" : "Roll Dice"}
                 </button>
