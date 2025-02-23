@@ -1,18 +1,24 @@
 import Hero from "../hero";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { motion } from "framer-motion";
 import { shareStates } from "@/context";
-import { scoreTypes } from "@/types";
 
 export default function Score() {
     /*---> States <---*/
     const { showMenu, score, setScore } = useContext(shareStates);
 
-    const removeScore = (die: scoreTypes) => {
-        setScore(score?.filter((item) => item?.level !== die?.level || item?.time?.minutes !== die?.time?.minutes && item?.time?.seconds !== die?.time?.seconds))
-        localStorage.setItem("score", JSON.stringify(score));
+    /*---> Functions <---*/
+    const removeScore = (id: string) => {
+        setScore((prevState) => prevState?.filter((item) => item?.id !== id))
     }
+
+    /*---> Effects <---*/
+    useEffect(() => {
+        if (score?.length > 0) {
+            localStorage.setItem("score", JSON.stringify(score));
+        }
+    }, [score])
 
     return (
         <motion.div
@@ -34,13 +40,13 @@ export default function Score() {
                     </TableHeader>
                     <TableBody>
                         {score && score?.sort((a, b) => a?.time?.minutes - b?.time?.minutes || a?.time?.seconds - b?.time?.seconds).map((item, index) => (
-                            <TableRow key={index}>
+                            <TableRow key={item?.id}>
                                 <TableCell className="w-1/4 font-bold">{index + 1}</TableCell>
                                 <TableCell className="w-1/4 font-bold text-center">{item?.level}</TableCell>
                                 <TableCell className="w-1/4 font-bold text-center">{item?.time?.minutes >= 10 ? "" : 0}{item?.time?.minutes} : {item?.time?.seconds >= 10 ? "" : 0}{item?.time?.seconds}</TableCell>
                                 <TableCell className="w-1/4 font-bold text-end">
                                     <button className="px-[11px] py-[5px] rounded-md bg-black text-white text-[0.8rem] font-bold"
-                                        onClick={() => removeScore(item)}>
+                                        onClick={() => removeScore(item?.id)}>
                                         Remove
                                     </button>
                                 </TableCell>

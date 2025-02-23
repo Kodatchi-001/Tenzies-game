@@ -19,7 +19,7 @@ export default function Game() {
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const [level, setLevel] = useState<gameLevelTypes>('normal')
     const [randomLevel, setRandomLevel] = useState<number>(6);
-    const [gameScore, setGameScore] = useState<scoreTypes>({ level: "", time: { minutes: 0, seconds: 0 } })
+    const [gameScore, setGameScore] = useState<scoreTypes>({ id: "", level: "", time: { minutes: 0, seconds: 0 } })
     const { width, height } = useWindowSize()
     const { setScore } = useContext(shareStates)
 
@@ -54,7 +54,7 @@ export default function Game() {
             }, 1000);
         }
         if (gameWon && intervalRef.current) {
-            setGameScore({ level: level, time: time })
+            setGameScore({ id: uuidv4(), level: level, time: time })
             clearInterval(intervalRef.current)
         }
     }

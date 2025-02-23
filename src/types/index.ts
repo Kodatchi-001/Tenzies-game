@@ -5,6 +5,7 @@ export interface diceTypes {
 }
 export type gameLevelTypes = 'normal' | 'hard' | 'extreme'
 export interface scoreTypes {
+    id : string
     level: string
     time: { minutes: number, seconds: number }
 }
