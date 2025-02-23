@@ -21,7 +21,7 @@ export default function Game() {
     const [randomLevel, setRandomLevel] = useState<number>(6);
     const [gameScore, setGameScore] = useState<scoreTypes>({ id: "", level: "", time: { minutes: 0, seconds: 0 } })
     const { width, height } = useWindowSize()
-    const { setScore } = useContext(shareStates)
+    const { setScore, setShowMenu } = useContext(shareStates)
 
     /*---> Functions <---*/
     const generateAllDies = (): diceTypes[] => {
@@ -29,7 +29,7 @@ export default function Game() {
     }
     const roleDice = (): void => {
         if (gameWon) {
-            setDice(generateAllDies)
+            setDice(generateAllDies())
             setTimerRuns(false)
             setTime({ minutes: 0, seconds: 0 });
         } else {
@@ -40,6 +40,7 @@ export default function Game() {
     }
     const hold = (id: string): void => {
         setTimerRuns(true)
+        setShowMenu(false)
         setDice((prevState) => prevState?.map((die) => die?.id === id ? { ...die, isHeld: !die?.isHeld } : die));
     }
     const gameTimer = (): void => {

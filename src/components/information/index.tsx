@@ -12,7 +12,7 @@ export default function Information() {
             initial={{ marginTop: "120px", opacity: 0 }}
             animate={{ marginTop: showInformation ? "84px" : "120px", opacity: showInformation ? 1 : 0 }}
             transition={{ type: "spring", stiffness: 100, damping: 16 }}
-            className="w-full sm:max-w-[400px] lg:right-24 mt-[84px] flex flex-col absolute shadow-xl px-6 py-7 sm:rounded-xl z-10 bg-white">
+            className="w-full sm:max-w-[400px] h-screen lg:h-auto lg:right-24 mt-[84px] flex flex-col absolute shadow-xl px-6 py-7 sm:rounded-xl z-10 bg-white">
             <Hero title="Information" />
             <ul className="flex flex-col gap-2">
                 <li>
